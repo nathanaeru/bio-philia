@@ -16,12 +16,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.http import HttpResponse
-from django.urls import path
+from django.urls import path, include
 
 def hello_world(request):
-    return HttpResponse("<h1>Hello World!</h1><p>Deployment berhasil.</p>")
+    if request.user.is_authenticated:
+        html = f"<h1>Halo, {request.user.username}!</h1> <p><a href='/accounts/logout/'>Logout</a></p>"
+    else:
+        html = "<h1>Anda belum login.</h1> <p><a href='/accounts/google/login/'>Login dengan Google</a></p>"
+    
+    return HttpResponse(html)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('accounts/', include('allauth.urls')),
     path('', hello_world, name='hello_world'),
 ]
