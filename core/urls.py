@@ -19,7 +19,7 @@ from django.http import HttpResponse
 from django.urls import path
 
 def hello_world(request):
-    return HttpResponse("<h1>Hello World dari Render!</h1><p>Deployment berhasil.</p>")
+    return HttpResponse("<h1>Hello World!</h1><p>Deployment berhasil.</p>")
 
 urlpatterns = [
     path('admin/', admin.site.urls),
