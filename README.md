@@ -10,6 +10,9 @@
 - Dibrienna Rauseuky (2406429834)
 - Ardyana Feby Pratiwi (2406398274)
 
+### Deployment Link
+[https://nathanaeru.pythonanywhere.com/](https://nathanaeru.pythonanywhere.com/)
+
 ### How to Run the Project
 
 1. Clone this repo.
