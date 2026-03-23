@@ -15,6 +15,8 @@
 
 ### How to Run the Project
 
+Requirement: Python version 3.12+
+
 1. Clone this repo.
 
 2. Navigate to the project directory and create a virtual environment:
@@ -50,8 +52,8 @@
    ```
 6. Run the development server:
    ```bash
-    python manage.py runserver
-    ```
+   python manage.py runserver
+   ```
 7. Open the localhost URL provided in the terminal (usually http://127.0.0.1:8000) in your web browser to see the application running.
 
 ### How to Set Up Google OAuth2 (Local & Production)
