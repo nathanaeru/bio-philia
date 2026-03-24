@@ -1,29 +1,26 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib import messages # <-- Import sistem pesan Django
 from .models import ThemeSetting
+from .context_processors import AUTHORIZED_EMAILS # <-- Import daftar email tadi
 
-# Daftar email anggota kelompok (Authorization List)
-AUTHORIZED_EMAILS = [
-    'lhn4th4n@gmail.com',
-    # Nanti email teman kelompok yang lain ditambahkan ke sini
-]
-
-# Fungsi pengecekan otorisasi
-def is_group_member(user):
-    return user.is_authenticated and user.email in AUTHORIZED_EMAILS
-
-# Lindungi View ini menggunakan decorator
-# Jika user gagal tes (bukan anggota), dia akan dilempar kembali ke halaman '/'
-@user_passes_test(is_group_member, login_url='/')
 def edit_theme(request):
-    # Ambil pengaturan tema pertama, jika belum ada di DB, buatkan secara otomatis
+    if not request.user.is_authenticated:
+        messages.warning(request, "Silakan login terlebih dahulu untuk mengakses halaman tersebut.")
+        return redirect('home_view')
+        
+    if request.user.email not in AUTHORIZED_EMAILS:
+        messages.error(request, "Akses Ditolak: Anda tidak diperkenankan mengedit tema website ini.")
+        return redirect('home_view')
+
     theme, created = ThemeSetting.objects.get_or_create(id=1)
     
     if request.method == 'POST':
-        # Simpan warna baru dari form HTML
         theme.bg_color = request.POST.get('bg_color')
         theme.text_color = request.POST.get('text_color')
+        theme.font_family = request.POST.get('font_family')
         theme.save()
-        return redirect('home_view') # Kembali ke halaman utama
+        
+        messages.success(request, "Tema berhasil diperbarui!")
+        return redirect('home_view')
         
     return render(request, 'edit_theme.html', {'theme': theme})
