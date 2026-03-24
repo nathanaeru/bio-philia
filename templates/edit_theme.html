@@ -1,55 +1,63 @@
 {% extends 'base.html' %} {% block content %}
 <div class="flex flex-col items-center justify-center mt-12">
   <div
-    class="bg-gray-900 bg-opacity-50 backdrop-blur-md p-10 rounded-3xl shadow-2xl border border-purple-400 text-center max-w-lg w-full"
+    class="bg-md-surfaceVariant backdrop-blur-md p-8 sm:p-10 rounded-[28px] shadow-sm text-center max-w-lg w-full"
   >
-    <h2 class="text-3xl font-extrabold mb-6 text-white">Pengaturan Tema</h2>
-    <p class="mb-8 text-sm text-gray-200">
-      Ubah warna latar belakang dan teks website untuk semua pengunjung.
+    <h2 class="text-3xl font-bold mb-4 tracking-tight">Pengaturan Tema</h2>
+    <p class="mb-8 text-sm opacity-80">
+      Sesuaikan warna latar belakang dan teks secara global.
     </p>
 
-    <form method="post" class="space-y-6">
+    <form method="post" class="space-y-4">
       {% csrf_token %}
 
-      <div class="flex flex-col items-start">
-        <label for="bg_color" class="text-white font-semibold mb-2"
-          >Warna Latar Belakang (Background):</label
-        >
-        <div class="flex items-center w-full">
-          <input
-            type="color"
-            id="bg_color"
-            name="bg_color"
-            value="{{ theme.bg_color|default:'#be185d' }}"
-            class="h-12 w-20 rounded cursor-pointer border-none p-0 bg-transparent"
-          />
-          <span class="ml-4 text-white font-mono"
+      <div
+        class="flex items-center justify-between bg-white/10 p-4 rounded-2xl hover:bg-white/20 transition-colors"
+      >
+        <label for="bg_color" class="font-medium">Warna Background</label>
+        <div class="flex items-center gap-3">
+          <span class="font-mono text-sm opacity-80"
             >{{ theme.bg_color|default:'#be185d' }}</span
           >
+          <div
+            class="relative overflow-hidden w-10 h-10 rounded-full border border-white/20 shadow-sm"
+          >
+            <input
+              type="color"
+              id="bg_color"
+              name="bg_color"
+              value="{{ theme.bg_color|default:'#be185d' }}"
+              class="absolute -top-2 -left-2 w-16 h-16 cursor-pointer"
+            />
+          </div>
         </div>
       </div>
 
-      <div class="flex flex-col items-start">
-        <label for="text_color" class="text-white font-semibold mb-2"
-          >Warna Teks Utama:</label
-        >
-        <div class="flex items-center w-full">
-          <input
-            type="color"
-            id="text_color"
-            name="text_color"
-            value="{{ theme.text_color|default:'#ffffff' }}"
-            class="h-12 w-20 rounded cursor-pointer border-none p-0 bg-transparent"
-          />
-          <span class="ml-4 text-white font-mono"
+      <div
+        class="flex items-center justify-between bg-white/10 p-4 rounded-2xl hover:bg-white/20 transition-colors"
+      >
+        <label for="text_color" class="font-medium">Warna Teks</label>
+        <div class="flex items-center gap-3">
+          <span class="font-mono text-sm opacity-80"
             >{{ theme.text_color|default:'#ffffff' }}</span
           >
+          <div
+            class="relative overflow-hidden w-10 h-10 rounded-full border border-white/20 shadow-sm"
+          >
+            <input
+              type="color"
+              id="text_color"
+              name="text_color"
+              value="{{ theme.text_color|default:'#ffffff' }}"
+              class="absolute -top-2 -left-2 w-16 h-16 cursor-pointer"
+            />
+          </div>
         </div>
       </div>
 
       <button
         type="submit"
-        class="w-full mt-4 bg-gradient-to-r from-purple-500 to-blue-600 hover:from-purple-600 hover:to-blue-700 text-white font-bold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg"
+        class="w-full mt-6 bg-md-primary text-md-onPrimary hover:bg-opacity-90 font-medium py-3 px-6 rounded-full transition-all duration-200 shadow-sm"
       >
         Simpan Tema
       </button>
@@ -58,9 +66,9 @@
     <div class="mt-6">
       <a
         href="{% url 'home_view' %}"
-        class="text-blue-300 hover:text-blue-100 text-sm underline"
+        class="font-medium opacity-80 hover:opacity-100 transition-opacity"
       >
-        Batal dan Kembali
+        Batal
       </a>
     </div>
   </div>
