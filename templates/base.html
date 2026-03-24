@@ -1,28 +1,35 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bio Philia093</title>
     <script src="https://cdn.tailwindcss.com"></script>
-</head>
+  </head>
 
-<body class="bg-pink-700 text-white min-h-screen font-sans antialiased">
+  <body
+    class="min-h-screen font-sans antialiased transition-colors duration-500"
+    style="background-color: {{ theme.bg_color|default:'#be185d' }}; color: {{ theme.text_color|default:'#ffffff' }};"
+  >
+    <nav
+      class="p-4 bg-black bg-opacity-20 shadow-md border-b border-white border-opacity-20"
+    >
+      <div class="container mx-auto flex justify-between items-center">
+        <h1 class="text-2xl font-bold tracking-wider">PhiLia093</h1>
 
-    <nav class="p-4 bg-pink-900 shadow-md border-b border-purple-500">
-        <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-purple-300">
-                PhiLia093
-            </h1>
-        </div>
+        {% if user.is_authenticated %}
+        <a
+          href="/edit-theme/"
+          class="text-sm bg-white bg-opacity-20 hover:bg-opacity-40 px-4 py-2 rounded-full transition-all"
+        >
+          ⚙️ Ubah Tema
+        </a>
+        {% endif %}
+      </div>
     </nav>
 
     <main class="container mx-auto p-8">
-        {% block content %}
-        {% endblock %}
+      {% block content %} {% endblock %}
     </main>
-
-</body>
-
+  </body>
 </html>

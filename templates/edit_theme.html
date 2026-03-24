@@ -1,0 +1,68 @@
+{% extends 'base.html' %} {% block content %}
+<div class="flex flex-col items-center justify-center mt-12">
+  <div
+    class="bg-gray-900 bg-opacity-50 backdrop-blur-md p-10 rounded-3xl shadow-2xl border border-purple-400 text-center max-w-lg w-full"
+  >
+    <h2 class="text-3xl font-extrabold mb-6 text-white">Pengaturan Tema</h2>
+    <p class="mb-8 text-sm text-gray-200">
+      Ubah warna latar belakang dan teks website untuk semua pengunjung.
+    </p>
+
+    <form method="post" class="space-y-6">
+      {% csrf_token %}
+
+      <div class="flex flex-col items-start">
+        <label for="bg_color" class="text-white font-semibold mb-2"
+          >Warna Latar Belakang (Background):</label
+        >
+        <div class="flex items-center w-full">
+          <input
+            type="color"
+            id="bg_color"
+            name="bg_color"
+            value="{{ theme.bg_color|default:'#be185d' }}"
+            class="h-12 w-20 rounded cursor-pointer border-none p-0 bg-transparent"
+          />
+          <span class="ml-4 text-white font-mono"
+            >{{ theme.bg_color|default:'#be185d' }}</span
+          >
+        </div>
+      </div>
+
+      <div class="flex flex-col items-start">
+        <label for="text_color" class="text-white font-semibold mb-2"
+          >Warna Teks Utama:</label
+        >
+        <div class="flex items-center w-full">
+          <input
+            type="color"
+            id="text_color"
+            name="text_color"
+            value="{{ theme.text_color|default:'#ffffff' }}"
+            class="h-12 w-20 rounded cursor-pointer border-none p-0 bg-transparent"
+          />
+          <span class="ml-4 text-white font-mono"
+            >{{ theme.text_color|default:'#ffffff' }}</span
+          >
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        class="w-full mt-4 bg-gradient-to-r from-purple-500 to-blue-600 hover:from-purple-600 hover:to-blue-700 text-white font-bold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg"
+      >
+        Simpan Tema
+      </button>
+    </form>
+
+    <div class="mt-6">
+      <a
+        href="{% url 'home_view' %}"
+        class="text-blue-300 hover:text-blue-100 text-sm underline"
+      >
+        Batal dan Kembali
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}
