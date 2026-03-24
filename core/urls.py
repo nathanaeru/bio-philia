@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.shortcuts import render
 from django.urls import path, include
+from biodata.views import edit_theme
 
 def home_view(request):
     return render(request, 'home.html')
@@ -24,5 +25,6 @@ def home_view(request):
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
-    path('', home_view, name='home'),
+    path('', home_view, name='home_view'),
+    path('edit-theme/', edit_theme, name='edit_theme'),
 ]
