@@ -5,6 +5,7 @@ AUTHORIZED_EMAILS = [
     'arrdyana@gmail.com',
     'arisnrochelle@gmail.com',
     'hlee79394@gmail.com',
+    'diraramadhani05@gmail.com'
 ]
 
 def website_theme(request):
