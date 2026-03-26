@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.shortcuts import render
 from django.urls import path, include
 from biodata.views import edit_theme
+from core.views import github_webhook
 
 def home_view(request):
     return render(request, 'home.html')
@@ -27,4 +28,5 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('', home_view, name='home_view'),
     path('edit-theme/', edit_theme, name='edit_theme'),
+    path('webhook/deploy/', github_webhook, name='github_webhook'),
 ]
