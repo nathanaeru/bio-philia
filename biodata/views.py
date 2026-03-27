@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages # <-- Import sistem pesan Django
-from .models import ThemeSetting
+from .models import ThemeSetting, Biodata
 from .context_processors import AUTHORIZED_EMAILS # <-- Import daftar email tadi
 
 def edit_theme(request):
@@ -24,3 +24,13 @@ def edit_theme(request):
         return redirect('home_view')
         
     return render(request, 'edit_theme.html', {'theme': theme})
+
+def profile_view(request):
+    if not request.user.is_authenticated:
+        return redirect('home_view')
+
+    biodata, created = Biodata.objects.get_or_create(user=request.user)
+
+    return render(request, 'profile.html', {
+        'biodata': biodata
+    })

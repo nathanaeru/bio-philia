@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="flex flex-col items-center justify-center mt-12">
+  <div class="p-10 rounded-[28px] shadow-sm text-center max-w-lg w-full">
+
+    <h2 class="text-3xl font-bold mb-6">Profile</h2>
+
+    <!-- Avatar -->
+    <img src="{{ biodata.get_avatar_url }}"
+         style="border-radius:50%; width:120px; height:120px; margin: 10px auto;">
+
+    <p class="mt-4 text-lg">Nama: {{ biodata.nama|default:"-" }}</p>
+    <p class="text-lg">NPM: {{ biodata.npm|default:"-" }}</p>
+    <p class="text-lg">Jurusan: {{ biodata.jurusan|default:"-" }}</p>
+
+  </div>
+</div>
+{% endblock %}

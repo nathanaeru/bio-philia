@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.shortcuts import render
 from django.urls import path, include
 from django.views.generic import RedirectView
-from biodata.views import edit_theme
+from biodata.views import edit_theme, profile_view
 from core.views import github_webhook
 
 def home_view(request):
@@ -33,4 +33,5 @@ urlpatterns = [
     path('', home_view, name='home_view'),
     path('edit-theme/', edit_theme, name='edit_theme'),
     path('webhook/deploy/', github_webhook, name='github_webhook'),
+    path('profile/', profile_view, name='profile'),
 ]
