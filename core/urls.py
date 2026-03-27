@@ -17,14 +17,23 @@ Including another URLconf
 from django.contrib import admin
 from django.shortcuts import render
 from django.urls import path, include
+from django.views.generic import RedirectView
 from biodata.views import edit_theme
+from core.views import github_webhook, home_view
+from django.conf import settings
+from django.conf.urls.static import static
 
-def home_view(request):
-    return render(request, 'home.html')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('accounts/login/', RedirectView.as_view(url='/accounts/google/login/')),
+    path('accounts/signup/', RedirectView.as_view(url='/accounts/google/login/')),
+    path('accounts/password/reset/', RedirectView.as_view(url='/')),
     path('accounts/', include('allauth.urls')),
     path('', home_view, name='home_view'),
     path('edit-theme/', edit_theme, name='edit_theme'),
+    path('webhook/deploy/', github_webhook, name='github_webhook'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
