@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bio Philia093</title>
     <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600&family=Playfair+Display:ital,wght@0,400;0,700&family=Poppins:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
     <script src="https://cdn.tailwindcss.com"></script>
@@ -51,8 +51,8 @@
   </head>
 
   <body
-    class="min-h-screen font-sans antialiased transition-colors duration-500"
-    style="background-color: {{ theme.bg_color|default:'#be185d' }}; color: {{ theme.text_color|default:'#ffffff' }};"
+    class="min-h-screen antialiased transition-colors duration-500"
+    style="background-color: {{ theme.bg_color|default:'#be185d' }}; color: {{ theme.text_color|default:'#ffffff' }}; font-family: {{ theme.font_family|default:'Roboto, sans-serif' }};"
   >
     <nav class="p-4 bg-md-primary text-md-onPrimary shadow-md transition-colors duration-500">
       <div class="container mx-auto flex justify-between items-center px-4">
