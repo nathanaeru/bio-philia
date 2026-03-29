@@ -58,14 +58,23 @@
       <div class="container mx-auto flex justify-between items-center px-4">
         <h1 class="text-2xl font-bold tracking-tight">PhiLia093</h1>
 
-        {% if is_group_member %}
-        <a
-          href="/edit-theme/"
-          class="text-sm font-medium bg-md-surfaceVariant hover:bg-black/20 px-6 py-2.5 rounded-full transition-all"
-        >
-          ⚙️ Ubah Tema
-        </a>
-        {% endif %}
+        <div class="flex items-center gap-3">
+          {% if user.is_authenticated %}
+        
+            {% if is_group_member %}
+            <a href="/edit-theme/" class="text-xs md:text-sm font-medium bg-white/10 hover:bg-white/20 px-4 py-2 rounded-full transition-all border border-white/10">
+              ⚙️ Ubah Tema
+            </a>
+            {% endif %}
+
+            <form method="post" action="/accounts/logout/" class="inline">
+              {% csrf_token %}
+              <button type="submit" class="text-xs md:text-sm font-medium bg-black/10 hover:bg-black/20 px-4 py-2 rounded-full transition-all border border-black/10">
+                Logout
+              </button>
+            </form>
+          {% endif %}
+        </div>
       </div>
     </nav>
 

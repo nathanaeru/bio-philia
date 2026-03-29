@@ -3,42 +3,23 @@
 {% block content %}
 <div class="flex flex-col items-center justify-center mt-12 gap-12">
   
+  {% if not user.is_authenticated %}
   <div class="bg-md-surfaceVariant backdrop-blur-md p-10 rounded-[28px] shadow-sm text-center max-w-lg w-full">
-    <h2 class="text-3xl font-bold mb-6 tracking-tight">Biodata Kelompok</h2>
+    <h2 class="text-3xl font-bold mb-4 tracking-tight">Biodata Kelompok</h2>
+    <p class="mb-8 text-lg opacity-90">
+      Anda belum login. Silakan login untuk melihat detail dan mengubah tampilan.
+    </p>
 
-    {% if user.is_authenticated %}
-      <p class="mb-8 text-xl font-medium">Halo, {{ user.username }}!</p>
-
-      {% if is_group_member %}
-      <a href="/edit-theme/" class="inline-block mb-4 w-full bg-white/20 hover:bg-white/30 text-current font-medium py-3 px-6 rounded-full transition-all duration-200 text-center">
-        🎨 Ganti Warna Tema
-      </a>
-      {% endif %}
-
-      <form method="post" action="/accounts/logout/">
-        {% csrf_token %}
-        <button type="submit" class="w-full bg-md-primary text-md-onPrimary hover:bg-opacity-90 font-medium py-3 px-6 rounded-full transition-all duration-200 shadow-sm">
-          Logout
-        </button>
-      </form>
-
-    {% else %}
-      <p class="mb-8 text-lg opacity-90">
-        Silakan login untuk mengubah tampilan website.
-      </p>
-
-      <a href="/accounts/google/login/" class="inline-block w-full bg-md-primary text-md-onPrimary hover:bg-opacity-90 font-medium py-3 px-6 rounded-full transition-all duration-200 shadow-sm">
-        Login dengan Google
-      </a>
-    {% endif %}
+    <a href="/accounts/google/login/" class="inline-block w-full bg-md-primary text-md-onPrimary hover:bg-opacity-90 font-bold py-4 px-6 rounded-full transition-all duration-200 shadow-lg text-lg text-center">
+      Login dengan Google
+    </a>
   </div>
+  {% endif %}
 
-<div class="w-full max-w-6xl mx-auto">
+  <div class="w-full max-w-6xl mx-auto">
     <div class="flex flex-wrap justify-center items-stretch gap-6">
-      
       {% for member in members %}
       <div class="bg-md-surfaceVariant backdrop-blur-md p-6 rounded-[28px] shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col items-center text-center w-full sm:w-[340px]">
-        
         <div class="w-24 h-24 mb-4 rounded-full overflow-hidden border-4 border-md-primary shadow-sm bg-white/10 flex items-center justify-center shrink-0">
           {% if member.avatar %}
             <img src="{{ member.avatar.url }}" alt="Foto {{ member.nama }}" class="w-full h-full object-cover" />
@@ -46,29 +27,23 @@
             <span class="text-3xl">👤</span>
           {% endif %}
         </div>
-        
         <h3 class="text-xl font-bold tracking-tight mb-1">{{ member.nama }}</h3>
         <p class="font-mono text-sm opacity-80 mb-4 bg-white/10 px-3 py-1 rounded-full">{{ member.npm }}</p>
-        
         <div class="w-full text-left space-y-2 mb-6 opacity-90 text-sm flex-grow">
           <p><strong>Jurusan:</strong> {{ member.jurusan }}</p>
           <p><strong>Lahir:</strong> {{ member.tanggal_lahir|date:"d M Y" }}</p>
           <p><strong>Hobi:</strong> {{ member.hobi }}</p>
         </div>
-        
         <div class="mt-auto pt-4 border-t border-white/20 w-full italic opacity-80 text-sm">
           "{{ member.quotes }}"
         </div>
-
       </div>
       {% empty %}
       <div class="col-span-full text-center py-10 opacity-70 w-full">
-        Belum ada data anggota kelompok. Silakan tambahkan lewat /admin/
+        Belum ada data anggota kelompok.
       </div>
       {% endfor %}
-
     </div>
   </div>
-
 </div>
 {% endblock %}
