@@ -16,7 +16,7 @@
       >
         <label for="bg_color" class="font-medium">Warna Background</label>
         <div class="flex items-center gap-3">
-          <span class="font-mono text-sm opacity-80"
+          <span id="bg_color_hex" class="font-mono text-sm opacity-80 uppercase"
             >{{ theme.bg_color|default:'#be185d' }}</span
           >
           <div
@@ -38,7 +38,9 @@
       >
         <label for="text_color" class="font-medium">Warna Teks</label>
         <div class="flex items-center gap-3">
-          <span class="font-mono text-sm opacity-80"
+          <span
+            id="text_color_hex"
+            class="font-mono text-sm opacity-80 uppercase"
             >{{ theme.text_color|default:'#ffffff' }}</span
           >
           <div
@@ -132,15 +134,11 @@
               Monospace
             </option>
             <option
-              value="'HYWenHei', sans-serif"
-              style="font-family: &quot;HYWenHei&quot;, sans-serif"
-              {%
-              if
-              theme.font_family=""
-              ="'HYWenHei', sans-serif"
-              %}selected{%
-              endif
-              %}
+              value="'HYWenHei', 'Times New Roman', serif"
+              style="
+                font-family:
+                  &quot;HYWenHei&quot;, &quot;Times New Roman&quot;, serif;
+              "
             >
               HYWenHei
             </option>
@@ -548,6 +546,20 @@
                 newOption.style.fontFamily = currentFont;
                 selectElement.add(newOption);
               }
+
+              const bgColorInput = document.getElementById("bg_color");
+              const bgColorHex = document.getElementById("bg_color_hex");
+
+              bgColorInput.addEventListener("input", function () {
+                bgColorHex.textContent = this.value.toUpperCase();
+              });
+
+              const textColorInput = document.getElementById("text_color");
+              const textColorHex = document.getElementById("text_color_hex");
+
+              textColorInput.addEventListener("input", function () {
+                textColorHex.textContent = this.value.toUpperCase();
+              });
             });
           </script>
         </div>
