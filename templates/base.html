@@ -22,7 +22,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
     <script>
-      const baseBgColor = "{{ theme.bg_color|default:'#be185d' }}";
+      const baseBgColor = "{{ theme.bg_color|default:'#be185d'|escapejs }}";
 
       function darkenHexColor(hex, amount) {
         hex = hex.replace(/^#/, "");
