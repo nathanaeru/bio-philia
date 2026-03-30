@@ -15,12 +15,20 @@ def edit_theme(request):
     theme, created = ThemeSetting.objects.get_or_create(id=1)
     
     if request.method == 'POST':
-        theme.bg_color = request.POST.get('bg_color')
-        theme.text_color = request.POST.get('text_color')
-        theme.font_family = request.POST.get('font_family')
-        theme.save()
-        
-        messages.success(request, "Tema berhasil diperbarui!")
+        if 'reset' in request.POST:
+            # Kembalikan ke nilai default awal
+            theme.bg_color = '#be185d'
+            theme.text_color = '#ffffff'
+            theme.font_family = 'Roboto, sans-serif'
+            theme.save()
+            messages.success(request, "Tema berhasil dikembalikan ke pengaturan awal!")
+        else:
+            theme.bg_color = request.POST.get('bg_color')
+            theme.text_color = request.POST.get('text_color')
+            theme.font_family = request.POST.get('font_family')
+            theme.save()
+            messages.success(request, "Tema berhasil diperbarui!")
+            
         return redirect('home_view')
         
     return render(request, 'edit_theme.html', {'theme': theme})
