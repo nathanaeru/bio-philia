@@ -4,9 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bio Philia093</title>
-    <link 
-      href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Baloo+2:wght@500;700&family=Boogaloo&family=Caveat:wght@700&family=Cherry+Swash:wght@700&family=Chewy&family=Comfortaa:wght@500;700&family=Fredoka:wght@500;700&family=Grand+Hotel&family=Indie+Flower&family=Itim&family=Luckiest+Guy&family=Madimi+One&family=Mali:wght@500;700&family=Nunito:wght@600;800&family=Open+Sans:wght@400;600&family=Pacifico&family=Patrick+Hand&family=Playfair+Display:wght@700&family=Poppins:wght@400;600&family=Quicksand:wght@500;700&family=Raleway:wght@400;700&family=Roboto:wght@400;700&family=Sniglet:wght@800&family=Sriracha&display=swap" 
-      rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Baloo+2:wght@500;700&family=Boogaloo&family=Caveat:wght@700&family=Cherry+Swash:wght@700&family=Chewy&family=Comfortaa:wght@500;700&family=Dancing+Script:wght@500;700&family=Fredoka:wght@500;700&family=Grand+Hotel&family=Indie+Flower&family=Itim&family=Luckiest+Guy&family=Madimi+One&family=Mali:wght@500;700&family=Nunito:wght@600;800&family=Open+Sans:wght@400;600&family=Pacifico&family=Patrick+Hand&family=Playfair+Display:wght@700&family=Poppins:wght@400;600&family=Quicksand:wght@500;700&family=Raleway:wght@400;700&family=Roboto:wght@400;700&family=Sniglet:wght@800&family=Sriracha&display=swap"
+      rel="stylesheet"
     />
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -54,25 +54,42 @@
     class="min-h-screen antialiased transition-colors duration-500"
     style="background-color: {{ theme.bg_color|default:'#be185d' }}; color: {{ theme.text_color|default:'#ffffff' }}; font-family: {{ theme.font_family|default:'Roboto, sans-serif' }};"
   >
-    <nav class="p-4 bg-md-primary text-md-onPrimary shadow-md transition-colors duration-500">
+    <nav
+      class="p-4 bg-md-primary text-md-onPrimary shadow-md transition-colors duration-500"
+    >
       <div class="container mx-auto flex justify-between items-center px-4">
-        <h1 class="text-2xl font-bold tracking-tight">PhiLia093</h1>
+        <a
+          href="/"
+          class="text-2xl font-bold tracking-tight hover:opacity-80 transition-opacity"
+          >PhiLia093</a
+        >
 
         <div class="flex items-center gap-3">
-          {% if user.is_authenticated %}
-        
-            {% if is_group_member %}
-            <a href="/edit-theme/" class="text-xs md:text-sm font-medium bg-white/10 hover:bg-white/20 px-4 py-2 rounded-full transition-all border border-white/10">
-              ⚙️ Ubah Tema
-            </a>
-            {% endif %}
+          {% if user.is_authenticated %} {% if is_group_member %}
+          <a
+            href="/edit-theme/"
+            class="text-xs md:text-sm font-medium bg-white/10 hover:bg-white/20 px-4 py-2 rounded-full transition-all border border-white/10"
+          >
+            ⚙️ Ubah Tema
+          </a>
+          {% endif %}
 
-            <form method="post" action="/accounts/logout/" class="inline">
-              {% csrf_token %}
-              <button type="submit" class="text-xs md:text-sm font-medium bg-black/10 hover:bg-black/20 px-4 py-2 rounded-full transition-all border border-black/10">
-                Logout
-              </button>
-            </form>
+          <form method="post" action="/accounts/logout/" class="inline">
+            {% csrf_token %}
+            <button
+              type="submit"
+              class="text-xs md:text-sm font-medium bg-black/10 hover:bg-black/20 px-4 py-2 rounded-full transition-all border border-black/10"
+            >
+              Logout
+            </button>
+          </form>
+          {% else %}
+          <a
+            href="/accounts/google/login/"
+            class="text-xs md:text-sm font-bold bg-white text-md-primary hover:bg-gray-100 px-5 py-2 rounded-full transition-all shadow-sm"
+          >
+            Login dengan Google
+          </a>
           {% endif %}
         </div>
       </div>
