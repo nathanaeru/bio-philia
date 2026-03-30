@@ -131,7 +131,19 @@
             >
               Monospace
             </option>
-
+            <option
+              value="'HYWenHei', sans-serif"
+              style="font-family: &quot;HYWenHei&quot;, sans-serif"
+              {%
+              if
+              theme.font_family=""
+              ="'HYWenHei', sans-serif"
+              %}selected{%
+              endif
+              %}
+            >
+              HYWenHei
+            </option>
             <option
               value="'Comic Sans MS', 'Comic Sans', cursive"
               style="
@@ -149,20 +161,17 @@
               Comic Sans
             </option>
             <option
-              value="'Segoe Print', 'Bradley Hand', cursive"
-              style="
-                font-family:
-                  &quot;Segoe Print&quot;, &quot;Bradley Hand&quot;, cursive;
-              "
+              value="'Kalam', cursive"
+              style="font-family: &quot;Kalam&quot;, cursive"
               {%
               if
               theme.font_family=""
-              ="'Segoe Print', 'Bradley Hand', cursive"
+              ="'Kalam', cursive"
               %}selected{%
               endif
               %}
             >
-              Casual Handwriting
+              Kalam
             </option>
             <option
               value="'Dancing Script', cursive"
@@ -175,39 +184,34 @@
               endif
               %}
             >
-              Cursive Rapih (Dancing Script)
+              Dancing Script
             </option>
             <option
-              value="'Brush Script MT', cursive"
-              style="font-family: &quot;Brush Script MT&quot;, cursive"
+              value="'Kaushan Script', cursive"
+              style="font-family: &quot;Kaushan Script&quot;, cursive"
               {%
               if
               theme.font_family=""
-              ="'Brush Script MT', cursive"
+              ="'Kaushan Script', cursive"
               %}selected{%
               endif
               %}
             >
-              Brush Script
+              Kaushan
             </option>
             <option
-              value="'Arial Rounded MT Bold', 'Helvetica Rounded', sans-serif"
-              style="
-                font-family:
-                  &quot;Arial Rounded MT Bold&quot;,
-                  &quot;Helvetica Rounded&quot;, sans-serif;
-              "
+              value="'Varela Round', sans-serif"
+              style="font-family: &quot;Varela Round&quot;, sans-serif"
               {%
               if
               theme.font_family=""
-              ="'Arial Rounded MT Bold', 'Helvetica Rounded', sans-serif"
+              ="'Varela Round', sans-serif"
               %}selected{%
               endif
               %}
             >
-              Arial Rounded
+              Varela Round
             </option>
-
             <option
               value="'Mali', cursive"
               style="font-family: &quot;Mali&quot;, cursive"
@@ -328,7 +332,7 @@
               endif
               %}
             >
-              Gaya Mesin Tik
+              Courier New
             </option>
             <option
               value="Impact, Charcoal, sans-serif"
@@ -421,7 +425,7 @@
               endif
               %}
             >
-              Baloo (Bubbly)
+              Baloo
             </option>
             <option
               value="'Sniglet', cursive"
@@ -434,7 +438,7 @@
               endif
               %}
             >
-              Sniglet (Playful)
+              Sniglet
             </option>
             <option
               value="'Chewy', cursive"
@@ -447,7 +451,7 @@
               endif
               %}
             >
-              Chewy (Chunky)
+              Chewy
             </option>
             <option
               value="'Itim', cursive"
@@ -487,7 +491,7 @@
               endif
               %}
             >
-              Pacifico (Retro Cursive)
+              Pacifico
             </option>
             <option
               value="'Grand Hotel', cursive"
@@ -513,7 +517,7 @@
               endif
               %}
             >
-              Sriracha (Spicy Pen)
+              Sriracha
             </option>
             <option
               value="'Boogaloo', cursive"
@@ -526,7 +530,7 @@
               endif
               %}
             >
-              Boogaloo (Funky)
+              Boogaloo
             </option>
             <option
               value="'Cherry Swash', serif"
@@ -539,30 +543,36 @@
               endif
               %}
             >
-              Cherry Swash (Fancy)
+              Cherry Swash
             </option>
           </select>
           <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const currentFont = "{{ theme.font_family|default:'Roboto, sans-serif'|escapejs }}";
-                const selectElement = document.getElementById('font_family');
-                
-                let found = false;
-                
-                for (let i = 0; i < selectElement.options.length; i++) {
-                    if (selectElement.options[i].value === currentFont) {
-                        selectElement.selectedIndex = i;
-                        found = true;
-                        break;
-                    }
+            document.addEventListener("DOMContentLoaded", function () {
+              const currentFont =
+                "{{ theme.font_family|default:'Roboto, sans-serif'|escapejs }}";
+              const selectElement = document.getElementById("font_family");
+
+              let found = false;
+
+              for (let i = 0; i < selectElement.options.length; i++) {
+                if (selectElement.options[i].value === currentFont) {
+                  selectElement.selectedIndex = i;
+                  found = true;
+                  break;
                 }
-                
-                if (!found && currentFont) {
-                    let cleanName = currentFont.replace(/'/g, '').split(',')[0]; 
-                    const newOption = new Option("Font Lama (" + cleanName + ")", currentFont, true, true);
-                    newOption.style.fontFamily = currentFont;
-                    selectElement.add(newOption);
-                }
+              }
+
+              if (!found && currentFont) {
+                let cleanName = currentFont.replace(/'/g, "").split(",")[0];
+                const newOption = new Option(
+                  "Font Lama (" + cleanName + ")",
+                  currentFont,
+                  true,
+                  true,
+                );
+                newOption.style.fontFamily = currentFont;
+                selectElement.add(newOption);
+              }
             });
           </script>
         </div>
