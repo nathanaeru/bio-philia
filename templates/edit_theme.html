@@ -55,12 +55,525 @@
         </div>
       </div>
 
-      <button
-        type="submit"
-        class="w-full mt-6 bg-md-primary text-md-onPrimary hover:bg-opacity-90 font-medium py-3 px-6 rounded-full transition-all duration-200 shadow-sm"
+      <div
+        class="flex items-center justify-between bg-white/10 p-4 rounded-2xl hover:bg-white/20 transition-colors"
       >
-        Simpan Tema
-      </button>
+        <label for="font_family" class="font-medium">Jenis Font</label>
+        <div class="flex items-center gap-3">
+          <select
+            name="font_family"
+            id="font_family"
+            class="border border-white/20 rounded-lg p-2 text-current outline-none focus:border-white/50 w-40 sm:w-48 text-sm font-medium opacity-90 cursor-pointer"
+            style="background-color: {{ theme.bg_color|default:'#be185d' }};"
+          >
+            <option
+              value="Roboto, sans-serif"
+              style="font-family: Roboto, sans-serif"
+              {%
+              if
+              theme.font_family=""
+              ="Roboto, sans-serif"
+              %}selected{%
+              endif
+              %}
+            >
+              Roboto
+            </option>
+            <option
+              value="'Open Sans', sans-serif"
+              style="font-family: &quot;Open Sans&quot;, sans-serif"
+              {%
+              if
+              theme.font_family=""
+              ="'Open Sans', sans-serif"
+              %}selected{%
+              endif
+              %}
+            >
+              Open Sans
+            </option>
+            <option
+              value="'Poppins', sans-serif"
+              style="font-family: &quot;Poppins&quot;, sans-serif"
+              {%
+              if
+              theme.font_family=""
+              ="'Poppins', sans-serif"
+              %}selected{%
+              endif
+              %}
+            >
+              Poppins
+            </option>
+            <option
+              value="'Playfair Display', serif"
+              style="font-family: &quot;Playfair Display&quot;, serif"
+              {%
+              if
+              theme.font_family=""
+              ="'Playfair Display', serif"
+              %}selected{%
+              endif
+              %}
+            >
+              Playfair Display
+            </option>
+            <option
+              value="monospace"
+              style="font-family: monospace"
+              {%
+              if
+              theme.font_family=""
+              ="monospace"
+              %}selected{%
+              endif
+              %}
+            >
+              Monospace
+            </option>
+            <option
+              value="'HYWenHei', sans-serif"
+              style="font-family: &quot;HYWenHei&quot;, sans-serif"
+              {%
+              if
+              theme.font_family=""
+              ="'HYWenHei', sans-serif"
+              %}selected{%
+              endif
+              %}
+            >
+              HYWenHei
+            </option>
+            <option
+              value="'Lagu Sans', sans-serif"
+              style="font-family: &quot;Lagu Sans&quot;, sans-serif"
+              {%
+              if
+              theme.font_family=""
+              ="'Lagu Sans', sans-serif"
+              %}selected{%
+              endif
+              %}
+            >
+              Lagu Sans
+            </option>
+            <option
+              value="'DIN Next', sans-serif"
+              style="font-family: &quot;DIN Next&quot;, sans-serif"
+              {%
+              if
+              theme.font_family=""
+              ="'DIN Next', sans-serif"
+              %}selected{%
+              endif
+              %}
+            >
+              DIN Next
+            </option>
+            <option
+              value="'Comic Neue', cursive"
+              style="font-family: &quot;Comic Neue&quot;, cursive"
+            >
+              Comic Neue
+            </option>
+            <option
+              value="'Kalam', cursive"
+              style="font-family: &quot;Kalam&quot;, cursive"
+              {%
+              if
+              theme.font_family=""
+              ="'Kalam', cursive"
+              %}selected{%
+              endif
+              %}
+            >
+              Kalam
+            </option>
+            <option
+              value="'Dancing Script', cursive"
+              style="font-family: &quot;Dancing Script&quot;, cursive"
+              {%
+              if
+              theme.font_family=""
+              ="'Dancing Script', cursive"
+              %}selected{%
+              endif
+              %}
+            >
+              Dancing Script
+            </option>
+            <option
+              value="'Kaushan Script', cursive"
+              style="font-family: &quot;Kaushan Script&quot;, cursive"
+              {%
+              if
+              theme.font_family=""
+              ="'Kaushan Script', cursive"
+              %}selected{%
+              endif
+              %}
+            >
+              Kaushan
+            </option>
+            <option
+              value="'Varela Round', sans-serif"
+              style="font-family: &quot;Varela Round&quot;, sans-serif"
+              {%
+              if
+              theme.font_family=""
+              ="'Varela Round', sans-serif"
+              %}selected{%
+              endif
+              %}
+            >
+              Varela Round
+            </option>
+            <option
+              value="'Mali', cursive"
+              style="font-family: &quot;Mali&quot;, cursive"
+              {%
+              if
+              theme.font_family=""
+              ="'Mali', cursive"
+              %}selected{%
+              endif
+              %}
+            >
+              Mali
+            </option>
+            <option
+              value="'Caveat', cursive"
+              style="font-family: &quot;Caveat&quot;, cursive"
+              {%
+              if
+              theme.font_family=""
+              ="'Caveat', cursive"
+              %}selected{%
+              endif
+              %}
+            >
+              Caveat
+            </option>
+            <option
+              value="'Patrick Hand', cursive"
+              style="font-family: &quot;Patrick Hand&quot;, cursive"
+              {%
+              if
+              theme.font_family=""
+              ="'Patrick Hand', cursive"
+              %}selected{%
+              endif
+              %}
+            >
+              Patrick Hand
+            </option>
+            <option
+              value="'Indie Flower', cursive"
+              style="font-family: &quot;Indie Flower&quot;, cursive"
+              {%
+              if
+              theme.font_family=""
+              ="'Indie Flower', cursive"
+              %}selected{%
+              endif
+              %}
+            >
+              Indie Flower
+            </option>
+            <option
+              value="'Amatic SC', cursive"
+              style="font-family: &quot;Amatic SC&quot;, cursive"
+              {%
+              if
+              theme.font_family=""
+              ="'Amatic SC', cursive"
+              %}selected{%
+              endif
+              %}
+            >
+              Amatic SC
+            </option>
+            <option
+              value="'Mulish', sans-serif"
+              style="font-family: &quot;Mulish&quot;, sans-serif"
+            >
+              Mulish
+            </option>
+            <option
+              value="'Cabin', sans-serif"
+              style="font-family: &quot;Cabin&quot;, sans-serif"
+            >
+              Cabin
+            </option>
+            <option
+              value="'Macondo', cursive"
+              style="font-family: &quot;Macondo&quot;, cursive"
+            >
+              Macondo
+            </option>
+            <option
+              value="'Space Mono', monospace"
+              style="font-family: &quot;Space Mono&quot;, monospace"
+            >
+              Space Mono
+            </option>
+            <option
+              value="'Anton', sans-serif"
+              style="font-family: &quot;Anton&quot;, sans-serif"
+            >
+              Anton
+            </option>
+            <option
+              value="'Quicksand', sans-serif"
+              style="font-family: &quot;Quicksand&quot;, sans-serif"
+              {%
+              if
+              theme.font_family=""
+              ="'Quicksand', sans-serif"
+              %}selected{%
+              endif
+              %}
+            >
+              Quicksand
+            </option>
+            <option
+              value="'Fredoka', sans-serif"
+              style="font-family: &quot;Fredoka&quot;, sans-serif"
+              {%
+              if
+              theme.font_family=""
+              ="'Fredoka', sans-serif"
+              %}selected{%
+              endif
+              %}
+            >
+              Fredoka
+            </option>
+            <option
+              value="'Comfortaa', cursive"
+              style="font-family: &quot;Comfortaa&quot;, cursive"
+              {%
+              if
+              theme.font_family=""
+              ="'Comfortaa', cursive"
+              %}selected{%
+              endif
+              %}
+            >
+              Comfortaa
+            </option>
+            <option
+              value="'Nunito', sans-serif"
+              style="font-family: &quot;Nunito&quot;, sans-serif"
+              {%
+              if
+              theme.font_family=""
+              ="'Nunito', sans-serif"
+              %}selected{%
+              endif
+              %}
+            >
+              Nunito
+            </option>
+            <option
+              value="'Madimi One', sans-serif"
+              style="font-family: &quot;Madimi One&quot;, sans-serif"
+              {%
+              if
+              theme.font_family=""
+              ="'Madimi One', sans-serif"
+              %}selected{%
+              endif
+              %}
+            >
+              Madimi
+            </option>
+
+            <option
+              value="'Baloo 2', cursive"
+              style="font-family: &quot;Baloo 2&quot;, cursive"
+              {%
+              if
+              theme.font_family=""
+              ="'Baloo 2', cursive"
+              %}selected{%
+              endif
+              %}
+            >
+              Baloo
+            </option>
+            <option
+              value="'Sniglet', cursive"
+              style="font-family: &quot;Sniglet&quot;, cursive"
+              {%
+              if
+              theme.font_family=""
+              ="'Sniglet', cursive"
+              %}selected{%
+              endif
+              %}
+            >
+              Sniglet
+            </option>
+            <option
+              value="'Chewy', cursive"
+              style="font-family: &quot;Chewy&quot;, cursive"
+              {%
+              if
+              theme.font_family=""
+              ="'Chewy', cursive"
+              %}selected{%
+              endif
+              %}
+            >
+              Chewy
+            </option>
+            <option
+              value="'Itim', cursive"
+              style="font-family: &quot;Itim&quot;, cursive"
+              {%
+              if
+              theme.font_family=""
+              ="'Itim', cursive"
+              %}selected{%
+              endif
+              %}
+            >
+              Itim
+            </option>
+            <option
+              value="'Luckiest Guy', cursive"
+              style="font-family: &quot;Luckiest Guy&quot;, cursive"
+              {%
+              if
+              theme.font_family=""
+              ="'Luckiest Guy', cursive"
+              %}selected{%
+              endif
+              %}
+            >
+              Luckiest Guy
+            </option>
+
+            <option
+              value="'Pacifico', cursive"
+              style="font-family: &quot;Pacifico&quot;, cursive"
+              {%
+              if
+              theme.font_family=""
+              ="'Pacifico', cursive"
+              %}selected{%
+              endif
+              %}
+            >
+              Pacifico
+            </option>
+            <option
+              value="'Grand Hotel', cursive"
+              style="font-family: &quot;Grand Hotel&quot;, cursive"
+              {%
+              if
+              theme.font_family=""
+              ="'Grand Hotel', cursive"
+              %}selected{%
+              endif
+              %}
+            >
+              Grand Hotel
+            </option>
+            <option
+              value="'Sriracha', cursive"
+              style="font-family: &quot;Sriracha&quot;, cursive"
+              {%
+              if
+              theme.font_family=""
+              ="'Sriracha', cursive"
+              %}selected{%
+              endif
+              %}
+            >
+              Sriracha
+            </option>
+            <option
+              value="'Boogaloo', cursive"
+              style="font-family: &quot;Boogaloo&quot;, cursive"
+              {%
+              if
+              theme.font_family=""
+              ="'Boogaloo', cursive"
+              %}selected{%
+              endif
+              %}
+            >
+              Boogaloo
+            </option>
+            <option
+              value="'Cherry Swash', serif"
+              style="font-family: &quot;Cherry Swash&quot;, serif"
+              {%
+              if
+              theme.font_family=""
+              ="'Cherry Swash', serif"
+              %}selected{%
+              endif
+              %}
+            >
+              Cherry Swash
+            </option>
+          </select>
+          <script>
+            document.addEventListener("DOMContentLoaded", function () {
+              const currentFont =
+                "{{ theme.font_family|default:'Roboto, sans-serif'|escapejs }}";
+              const selectElement = document.getElementById("font_family");
+
+              let found = false;
+
+              for (let i = 0; i < selectElement.options.length; i++) {
+                if (selectElement.options[i].value === currentFont) {
+                  selectElement.selectedIndex = i;
+                  found = true;
+                  break;
+                }
+              }
+
+              if (!found && currentFont) {
+                let cleanName = currentFont.replace(/'/g, "").split(",")[0];
+                const newOption = new Option(
+                  "Font Lama (" + cleanName + ")",
+                  currentFont,
+                  true,
+                  true,
+                );
+                newOption.style.fontFamily = currentFont;
+                selectElement.add(newOption);
+              }
+            });
+          </script>
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-4 mt-8">
+        <button
+          type="submit"
+          name="reset"
+          value="true"
+          class="w-full sm:w-1/2 bg-white/10 hover:bg-white/20 text-white border border-white/20 font-medium py-3 px-6 rounded-full transition-all duration-200 shadow-sm"
+          onclick="
+            return confirm(
+              'Apakah Anda yakin ingin mereset tema ke pengaturan awal?',
+            );
+          "
+        >
+          Reset Default
+        </button>
+        <button
+          type="submit"
+          class="w-full sm:w-1/2 bg-md-primary text-md-onPrimary hover:bg-opacity-90 font-medium py-3 px-6 rounded-full transition-all duration-200 shadow-sm"
+        >
+          Simpan Tema
+        </button>
+      </div>
     </form>
 
     <div class="mt-6">
