@@ -1,13 +1,44 @@
 {% extends 'base.html' %} {% block content %}
-<div class="flex flex-col items-center justify-center mt-12 gap-12">
+<div class="flex flex-col items-center justify-center mt-1 gap-8">
   <div class="w-full max-w-6xl mx-auto">
+    <form method="get" class="mb-8 flex flex-col gap-3 sm:flex-row">
+      <input
+        type="text"
+        name="q"
+        value="{{ search_query|default:'' }}"
+        placeholder="Cari nama member..."
+        class="w-full rounded-full border px-5 py-3 text-sm outline-none placeholder:text-current/60"
+        style="{% if theme_mode == 'light' %}border-color: color-mix(in srgb, {{ theme.text_color|default:'#ffffff' }} 22%, transparent); background: rgba(255,255,255,0.78);{% else %}border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.1);{% endif %}"
+      />
+      <div class="flex gap-3">
+        <button
+          type="submit"
+          class="rounded-full border px-5 py-3 text-sm font-medium transition hover:opacity-90"
+          style="{% if theme_mode == 'light' %}border-color: color-mix(in srgb, {{ theme.text_color|default:'#ffffff' }} 22%, transparent); background: color-mix(in srgb, {{ theme.bg_color|default:'#be185d' }} 60%, white 40%);{% else %}border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.15);{% endif %}"
+        >
+          Cari
+        </button>
+        {% if search_query %}
+        <a
+          href="{% url 'home_view' %}"
+          class="rounded-full border px-5 py-3 text-sm font-medium transition hover:opacity-90"
+          style="{% if theme_mode == 'light' %}border-color: color-mix(in srgb, {{ theme.text_color|default:'#ffffff' }} 18%, transparent); background: color-mix(in srgb, {{ theme.bg_color|default:'#be185d' }} 68%, white 32%);{% else %}border-color: rgba(255,255,255,0.15); background: transparent;{% endif %}"
+        >
+          Reset
+        </a>
+        {% endif %}
+      </div>
+    </form>
+
     <div class="flex flex-wrap justify-center items-stretch gap-6">
       {% for member in members %}
       <div
-        class="bg-md-surfaceVariant backdrop-blur-md p-6 rounded-[28px] shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col items-center text-center w-full sm:w-[340px]"
+        class="backdrop-blur-md p-6 rounded-[28px] shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col items-center text-center w-full sm:w-[340px] border"
+        style="background: linear-gradient(180deg, color-mix(in srgb, {{ theme.bg_color|default:'#be185d' }} 78%, white 22%), color-mix(in srgb, {{ theme.bg_color|default:'#be185d' }} 88%, black 12%)); border-color: color-mix(in srgb, {{ theme.text_color|default:'#ffffff' }} 20%, transparent);"
       >
         <div
-          class="w-24 h-24 mb-4 rounded-full overflow-hidden border-4 border-md-primary shadow-sm bg-white/10 flex items-center justify-center shrink-0"
+          class="w-24 h-24 mb-4 rounded-full overflow-hidden border-4 shadow-sm bg-white/15 flex items-center justify-center shrink-0"
+          style="border-color: color-mix(in srgb, {{ theme.text_color|default:'#ffffff' }} 24%, {{ theme.bg_color|default:'#be185d' }} 76%);"
         >
           {% if member.avatar %}
           <img
@@ -21,26 +52,33 @@
         </div>
         <h3 class="text-xl font-bold tracking-tight mb-1">{{ member.nama }}</h3>
         <p
-          class="font-mono text-sm opacity-80 mb-4 bg-white/10 px-3 py-1 rounded-full"
+          class="font-mono text-sm mb-4 bg-white/15 px-3 py-1 rounded-full"
+          style="color: color-mix(in srgb, {{ theme.text_color|default:'#ffffff' }} 88%, transparent);"
         >
           {{ member.npm }}
         </p>
         <div
-          class="w-full text-left space-y-2 mb-6 opacity-90 text-sm flex-grow"
+          class="w-full text-left space-y-2 mb-6 text-sm flex-grow"
+          style="color: color-mix(in srgb, {{ theme.text_color|default:'#ffffff' }} 88%, transparent);"
         >
           <p><strong>Jurusan:</strong> {{ member.jurusan }}</p>
           <p><strong>Lahir:</strong> {{ member.tanggal_lahir|date:"d M Y" }}</p>
           <p><strong>Hobi:</strong> {{ member.hobi }}</p>
         </div>
         <div
-          class="mt-auto pt-4 border-t border-white/20 w-full italic opacity-80 text-sm"
+          class="mt-auto pt-4 border-t w-full italic text-sm"
+          style="border-color: color-mix(in srgb, {{ theme.text_color|default:'#ffffff' }} 16%, transparent); color: color-mix(in srgb, {{ theme.text_color|default:'#ffffff' }} 76%, transparent);"
         >
           "{{ member.quotes }}"
         </div>
       </div>
       {% empty %}
       <div class="col-span-full text-center py-10 opacity-70 w-full">
+        {% if search_query %}
+        Tidak ada member dengan nama "{{ search_query }}".
+        {% else %}
         Belum ada data anggota kelompok.
+        {% endif %}
       </div>
       {% endfor %}
     </div>

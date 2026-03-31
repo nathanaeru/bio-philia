@@ -5,19 +5,51 @@
   >
     <h2 class="text-3xl font-bold mb-4 tracking-tight">Pengaturan Tema</h2>
     <p class="mb-8 text-sm opacity-80">
-      Sesuaikan warna latar belakang dan teks secara global.
+      Pilih original, dark, light, atau custom mode. Pengaturan custom akan disimpan untuk kunjungan berikutnya.
     </p>
 
-    <form method="post" class="space-y-4">
+    <form method="post" enctype="multipart/form-data" class="space-y-4">
       {% csrf_token %}
 
+      <div class="grid gap-3 sm:grid-cols-2">
+        <label class="flex items-center gap-3 bg-white/10 p-4 rounded-2xl hover:bg-white/20 transition-colors cursor-pointer text-left">
+          <input type="radio" name="theme_mode" value="original" class="h-4 w-4" {% if active_mode == 'original' %}checked{% endif %} />
+          <div>
+            <p class="font-medium">Original Mode</p>
+            <p class="text-xs opacity-75">Tema default website saat pertama kali dikunjungi.</p>
+          </div>
+        </label>
+        <label class="flex items-center gap-3 bg-white/10 p-4 rounded-2xl hover:bg-white/20 transition-colors cursor-pointer text-left">
+          <input type="radio" name="theme_mode" value="dark" class="h-4 w-4" {% if active_mode == 'dark' %}checked{% endif %} />
+          <div>
+            <p class="font-medium">Dark Mode</p>
+            <p class="text-xs opacity-75">Latar gelap dengan teks terang.</p>
+          </div>
+        </label>
+        <label class="flex items-center gap-3 bg-white/10 p-4 rounded-2xl hover:bg-white/20 transition-colors cursor-pointer text-left">
+          <input type="radio" name="theme_mode" value="light" class="h-4 w-4" {% if active_mode == 'light' %}checked{% endif %} />
+          <div>
+            <p class="font-medium">Light Mode</p>
+            <p class="text-xs opacity-75">Latar terang dengan teks gelap.</p>
+          </div>
+        </label>
+        <label class="flex items-center gap-3 bg-white/10 p-4 rounded-2xl hover:bg-white/20 transition-colors cursor-pointer text-left">
+          <input type="radio" name="theme_mode" value="custom" class="h-4 w-4" {% if active_mode == 'custom' %}checked{% endif %} />
+          <div>
+            <p class="font-medium">Custom Mode</p>
+            <p class="text-xs opacity-75">Atur warna, font, dan background foto sendiri.</p>
+          </div>
+        </label>
+      </div>
+
       <div
+        data-custom-control
         class="flex items-center justify-between bg-white/10 p-4 rounded-2xl hover:bg-white/20 transition-colors"
       >
         <label for="bg_color" class="font-medium">Warna Background</label>
         <div class="flex items-center gap-3">
           <span id="bg_color_hex" class="font-mono text-sm opacity-80 uppercase"
-            >{{ theme.bg_color|default:'#be185d' }}</span
+            >{{ custom_theme.bg_color|default:theme.bg_color|default:'#be185d' }}</span
           >
           <div
             class="relative overflow-hidden w-10 h-10 rounded-full border border-white/20 shadow-sm"
@@ -26,7 +58,7 @@
               type="color"
               id="bg_color"
               name="bg_color"
-              value="{{ theme.bg_color|default:'#be185d' }}"
+              value="{{ custom_theme.bg_color|default:theme.bg_color|default:'#be185d' }}"
               class="absolute -top-2 -left-2 w-16 h-16 cursor-pointer"
             />
           </div>
@@ -34,6 +66,7 @@
       </div>
 
       <div
+        data-custom-control
         class="flex items-center justify-between bg-white/10 p-4 rounded-2xl hover:bg-white/20 transition-colors"
       >
         <label for="text_color" class="font-medium">Warna Teks</label>
@@ -41,7 +74,7 @@
           <span
             id="text_color_hex"
             class="font-mono text-sm opacity-80 uppercase"
-            >{{ theme.text_color|default:'#ffffff' }}</span
+            >{{ custom_theme.text_color|default:theme.text_color|default:'#ffffff' }}</span
           >
           <div
             class="relative overflow-hidden w-10 h-10 rounded-full border border-white/20 shadow-sm"
@@ -50,7 +83,7 @@
               type="color"
               id="text_color"
               name="text_color"
-              value="{{ theme.text_color|default:'#ffffff' }}"
+              value="{{ custom_theme.text_color|default:theme.text_color|default:'#ffffff' }}"
               class="absolute -top-2 -left-2 w-16 h-16 cursor-pointer"
             />
           </div>
@@ -58,6 +91,7 @@
       </div>
 
       <div
+        data-custom-control
         class="flex items-center justify-between bg-white/10 p-4 rounded-2xl hover:bg-white/20 transition-colors"
       >
         <label for="font_family" class="font-medium">Jenis Font</label>
@@ -66,519 +100,85 @@
             name="font_family"
             id="font_family"
             class="border border-white/20 rounded-lg p-2 text-current outline-none focus:border-white/50 w-40 sm:w-48 text-sm font-medium opacity-90 cursor-pointer"
-            style="background-color: {{ theme.bg_color|default:'#be185d' }};"
+            style="background-color: {{ custom_theme.bg_color|default:theme.bg_color|default:'#be185d' }};"
           >
-            <option
-              value="Roboto, sans-serif"
-              style="font-family: Roboto, sans-serif"
-              {%
-              if
-              theme.font_family=""
-              ="Roboto, sans-serif"
-              %}selected{%
-              endif
-              %}
-            >
-              Roboto
-            </option>
-            <option
-              value="'Open Sans', sans-serif"
-              style="font-family: &quot;Open Sans&quot;, sans-serif"
-              {%
-              if
-              theme.font_family=""
-              ="'Open Sans', sans-serif"
-              %}selected{%
-              endif
-              %}
-            >
-              Open Sans
-            </option>
-            <option
-              value="'Poppins', sans-serif"
-              style="font-family: &quot;Poppins&quot;, sans-serif"
-              {%
-              if
-              theme.font_family=""
-              ="'Poppins', sans-serif"
-              %}selected{%
-              endif
-              %}
-            >
-              Poppins
-            </option>
-            <option
-              value="'Playfair Display', serif"
-              style="font-family: &quot;Playfair Display&quot;, serif"
-              {%
-              if
-              theme.font_family=""
-              ="'Playfair Display', serif"
-              %}selected{%
-              endif
-              %}
-            >
-              Playfair Display
-            </option>
-            <option
-              value="monospace"
-              style="font-family: monospace"
-              {%
-              if
-              theme.font_family=""
-              ="monospace"
-              %}selected{%
-              endif
-              %}
-            >
-              Monospace
-            </option>
-            <option
-              value="'HYWenHei', 'Times New Roman', serif"
-              style="
-                font-family:
-                  &quot;HYWenHei&quot;, &quot;Times New Roman&quot;, serif;
-              "
-            >
-              HYWenHei
-            </option>
-            <option
-              value="'Lagu Sans', sans-serif"
-              style="font-family: &quot;Lagu Sans&quot;, sans-serif"
-              {%
-              if
-              theme.font_family=""
-              ="'Lagu Sans', sans-serif"
-              %}selected{%
-              endif
-              %}
-            >
-              Lagu Sans
-            </option>
-            <option
-              value="'DIN Next', sans-serif"
-              style="font-family: &quot;DIN Next&quot;, sans-serif"
-              {%
-              if
-              theme.font_family=""
-              ="'DIN Next', sans-serif"
-              %}selected{%
-              endif
-              %}
-            >
-              DIN Next
-            </option>
-            <option
-              value="'Comic Neue', cursive"
-              style="font-family: &quot;Comic Neue&quot;, cursive"
-            >
-              Comic Neue
-            </option>
-            <option
-              value="'Kalam', cursive"
-              style="font-family: &quot;Kalam&quot;, cursive"
-              {%
-              if
-              theme.font_family=""
-              ="'Kalam', cursive"
-              %}selected{%
-              endif
-              %}
-            >
-              Kalam
-            </option>
-            <option
-              value="'Dancing Script', cursive"
-              style="font-family: &quot;Dancing Script&quot;, cursive"
-              {%
-              if
-              theme.font_family=""
-              ="'Dancing Script', cursive"
-              %}selected{%
-              endif
-              %}
-            >
-              Dancing Script
-            </option>
-            <option
-              value="'Kaushan Script', cursive"
-              style="font-family: &quot;Kaushan Script&quot;, cursive"
-              {%
-              if
-              theme.font_family=""
-              ="'Kaushan Script', cursive"
-              %}selected{%
-              endif
-              %}
-            >
-              Kaushan
-            </option>
-            <option
-              value="'Varela Round', sans-serif"
-              style="font-family: &quot;Varela Round&quot;, sans-serif"
-              {%
-              if
-              theme.font_family=""
-              ="'Varela Round', sans-serif"
-              %}selected{%
-              endif
-              %}
-            >
-              Varela Round
-            </option>
-            <option
-              value="'Mali', cursive"
-              style="font-family: &quot;Mali&quot;, cursive"
-              {%
-              if
-              theme.font_family=""
-              ="'Mali', cursive"
-              %}selected{%
-              endif
-              %}
-            >
-              Mali
-            </option>
-            <option
-              value="'Caveat', cursive"
-              style="font-family: &quot;Caveat&quot;, cursive"
-              {%
-              if
-              theme.font_family=""
-              ="'Caveat', cursive"
-              %}selected{%
-              endif
-              %}
-            >
-              Caveat
-            </option>
-            <option
-              value="'Patrick Hand', cursive"
-              style="font-family: &quot;Patrick Hand&quot;, cursive"
-              {%
-              if
-              theme.font_family=""
-              ="'Patrick Hand', cursive"
-              %}selected{%
-              endif
-              %}
-            >
-              Patrick Hand
-            </option>
-            <option
-              value="'Indie Flower', cursive"
-              style="font-family: &quot;Indie Flower&quot;, cursive"
-              {%
-              if
-              theme.font_family=""
-              ="'Indie Flower', cursive"
-              %}selected{%
-              endif
-              %}
-            >
-              Indie Flower
-            </option>
-            <option
-              value="'Amatic SC', cursive"
-              style="font-family: &quot;Amatic SC&quot;, cursive"
-              {%
-              if
-              theme.font_family=""
-              ="'Amatic SC', cursive"
-              %}selected{%
-              endif
-              %}
-            >
-              Amatic SC
-            </option>
-            <option
-              value="'Mulish', sans-serif"
-              style="font-family: &quot;Mulish&quot;, sans-serif"
-            >
-              Mulish
-            </option>
-            <option
-              value="'Cabin', sans-serif"
-              style="font-family: &quot;Cabin&quot;, sans-serif"
-            >
-              Cabin
-            </option>
-            <option
-              value="'Macondo', cursive"
-              style="font-family: &quot;Macondo&quot;, cursive"
-            >
-              Macondo
-            </option>
-            <option
-              value="'Space Mono', monospace"
-              style="font-family: &quot;Space Mono&quot;, monospace"
-            >
-              Space Mono
-            </option>
-            <option
-              value="'Anton', sans-serif"
-              style="font-family: &quot;Anton&quot;, sans-serif"
-            >
-              Anton
-            </option>
-            <option
-              value="'Quicksand', sans-serif"
-              style="font-family: &quot;Quicksand&quot;, sans-serif"
-              {%
-              if
-              theme.font_family=""
-              ="'Quicksand', sans-serif"
-              %}selected{%
-              endif
-              %}
-            >
-              Quicksand
-            </option>
-            <option
-              value="'Fredoka', sans-serif"
-              style="font-family: &quot;Fredoka&quot;, sans-serif"
-              {%
-              if
-              theme.font_family=""
-              ="'Fredoka', sans-serif"
-              %}selected{%
-              endif
-              %}
-            >
-              Fredoka
-            </option>
-            <option
-              value="'Comfortaa', cursive"
-              style="font-family: &quot;Comfortaa&quot;, cursive"
-              {%
-              if
-              theme.font_family=""
-              ="'Comfortaa', cursive"
-              %}selected{%
-              endif
-              %}
-            >
-              Comfortaa
-            </option>
-            <option
-              value="'Nunito', sans-serif"
-              style="font-family: &quot;Nunito&quot;, sans-serif"
-              {%
-              if
-              theme.font_family=""
-              ="'Nunito', sans-serif"
-              %}selected{%
-              endif
-              %}
-            >
-              Nunito
-            </option>
-            <option
-              value="'Madimi One', sans-serif"
-              style="font-family: &quot;Madimi One&quot;, sans-serif"
-              {%
-              if
-              theme.font_family=""
-              ="'Madimi One', sans-serif"
-              %}selected{%
-              endif
-              %}
-            >
-              Madimi
-            </option>
-
-            <option
-              value="'Baloo 2', cursive"
-              style="font-family: &quot;Baloo 2&quot;, cursive"
-              {%
-              if
-              theme.font_family=""
-              ="'Baloo 2', cursive"
-              %}selected{%
-              endif
-              %}
-            >
-              Baloo
-            </option>
-            <option
-              value="'Sniglet', cursive"
-              style="font-family: &quot;Sniglet&quot;, cursive"
-              {%
-              if
-              theme.font_family=""
-              ="'Sniglet', cursive"
-              %}selected{%
-              endif
-              %}
-            >
-              Sniglet
-            </option>
-            <option
-              value="'Chewy', cursive"
-              style="font-family: &quot;Chewy&quot;, cursive"
-              {%
-              if
-              theme.font_family=""
-              ="'Chewy', cursive"
-              %}selected{%
-              endif
-              %}
-            >
-              Chewy
-            </option>
-            <option
-              value="'Itim', cursive"
-              style="font-family: &quot;Itim&quot;, cursive"
-              {%
-              if
-              theme.font_family=""
-              ="'Itim', cursive"
-              %}selected{%
-              endif
-              %}
-            >
-              Itim
-            </option>
-            <option
-              value="'Luckiest Guy', cursive"
-              style="font-family: &quot;Luckiest Guy&quot;, cursive"
-              {%
-              if
-              theme.font_family=""
-              ="'Luckiest Guy', cursive"
-              %}selected{%
-              endif
-              %}
-            >
-              Luckiest Guy
-            </option>
-
-            <option
-              value="'Pacifico', cursive"
-              style="font-family: &quot;Pacifico&quot;, cursive"
-              {%
-              if
-              theme.font_family=""
-              ="'Pacifico', cursive"
-              %}selected{%
-              endif
-              %}
-            >
-              Pacifico
-            </option>
-            <option
-              value="'Grand Hotel', cursive"
-              style="font-family: &quot;Grand Hotel&quot;, cursive"
-              {%
-              if
-              theme.font_family=""
-              ="'Grand Hotel', cursive"
-              %}selected{%
-              endif
-              %}
-            >
-              Grand Hotel
-            </option>
-            <option
-              value="'Sriracha', cursive"
-              style="font-family: &quot;Sriracha&quot;, cursive"
-              {%
-              if
-              theme.font_family=""
-              ="'Sriracha', cursive"
-              %}selected{%
-              endif
-              %}
-            >
-              Sriracha
-            </option>
-            <option
-              value="'Boogaloo', cursive"
-              style="font-family: &quot;Boogaloo&quot;, cursive"
-              {%
-              if
-              theme.font_family=""
-              ="'Boogaloo', cursive"
-              %}selected{%
-              endif
-              %}
-            >
-              Boogaloo
-            </option>
-            <option
-              value="'Cherry Swash', serif"
-              style="font-family: &quot;Cherry Swash&quot;, serif"
-              {%
-              if
-              theme.font_family=""
-              ="'Cherry Swash', serif"
-              %}selected{%
-              endif
-              %}
-            >
-              Cherry Swash
-            </option>
+            <option value="Roboto, sans-serif">Roboto</option>
+            <option value="'Open Sans', sans-serif">Open Sans</option>
+            <option value="'Poppins', sans-serif">Poppins</option>
+            <option value="'Playfair Display', serif">Playfair Display</option>
+            <option value="monospace">Monospace</option>
+            <option value="'HYWenHei', 'Times New Roman', serif">HYWenHei</option>
+            <option value="'Lagu Sans', sans-serif">Lagu Sans</option>
+            <option value="'DIN Next', sans-serif">DIN Next</option>
+            <option value="'Comic Neue', cursive">Comic Neue</option>
+            <option value="'Kalam', cursive">Kalam</option>
+            <option value="'Dancing Script', cursive">Dancing Script</option>
+            <option value="'Kaushan Script', cursive">Kaushan</option>
+            <option value="'Varela Round', sans-serif">Varela Round</option>
+            <option value="'Mali', cursive">Mali</option>
+            <option value="'Caveat', cursive">Caveat</option>
+            <option value="'Patrick Hand', cursive">Patrick Hand</option>
+            <option value="'Indie Flower', cursive">Indie Flower</option>
+            <option value="'Amatic SC', cursive">Amatic SC</option>
+            <option value="'Mulish', sans-serif">Mulish</option>
+            <option value="'Cabin', sans-serif">Cabin</option>
+            <option value="'Macondo', cursive">Macondo</option>
+            <option value="'Space Mono', monospace">Space Mono</option>
+            <option value="'Anton', sans-serif">Anton</option>
+            <option value="'Quicksand', sans-serif">Quicksand</option>
+            <option value="'Fredoka', sans-serif">Fredoka</option>
+            <option value="'Comfortaa', cursive">Comfortaa</option>
+            <option value="'Nunito', sans-serif">Nunito</option>
+            <option value="'Madimi One', sans-serif">Madimi</option>
+            <option value="'Baloo 2', cursive">Baloo</option>
+            <option value="'Sniglet', cursive">Sniglet</option>
+            <option value="'Chewy', cursive">Chewy</option>
+            <option value="'Itim', cursive">Itim</option>
+            <option value="'Luckiest Guy', cursive">Luckiest Guy</option>
+            <option value="'Pacifico', cursive">Pacifico</option>
+            <option value="'Grand Hotel', cursive">Grand Hotel</option>
+            <option value="'Sriracha', cursive">Sriracha</option>
+            <option value="'Boogaloo', cursive">Boogaloo</option>
+            <option value="'Cherry Swash', serif">Cherry Swash</option>
           </select>
-          <script>
-            document.addEventListener("DOMContentLoaded", function () {
-              const currentFont =
-                "{{ theme.font_family|default:'Roboto, sans-serif'|escapejs }}";
-              const selectElement = document.getElementById("font_family");
-
-              let found = false;
-
-              for (let i = 0; i < selectElement.options.length; i++) {
-                if (selectElement.options[i].value === currentFont) {
-                  selectElement.selectedIndex = i;
-                  found = true;
-                  break;
-                }
-              }
-
-              if (!found && currentFont) {
-                let cleanName = currentFont.replace(/'/g, "").split(",")[0];
-                const newOption = new Option(
-                  "Font Lama (" + cleanName + ")",
-                  currentFont,
-                  true,
-                  true,
-                );
-                newOption.style.fontFamily = currentFont;
-                selectElement.add(newOption);
-              }
-
-              const bgColorInput = document.getElementById("bg_color");
-              const bgColorHex = document.getElementById("bg_color_hex");
-
-              bgColorInput.addEventListener("input", function () {
-                bgColorHex.textContent = this.value.toUpperCase();
-              });
-
-              const textColorInput = document.getElementById("text_color");
-              const textColorHex = document.getElementById("text_color_hex");
-
-              textColorInput.addEventListener("input", function () {
-                textColorHex.textContent = this.value.toUpperCase();
-              });
-            });
-          </script>
         </div>
       </div>
 
+      <div
+        data-custom-control
+        class="bg-white/10 p-4 rounded-2xl hover:bg-white/20 transition-colors text-left"
+      >
+        <label for="background_image" class="font-medium">Background Foto</label>
+        <p class="mt-1 text-xs opacity-75">
+          Upload JPG, JPEG, PNG, atau WEBP untuk dipakai sebagai background mode custom.
+        </p>
+        <input
+          type="file"
+          id="background_image"
+          name="background_image"
+          accept=".jpg,.jpeg,.png,.webp,image/png,image/jpeg,image/webp"
+          class="mt-4 block w-full text-sm"
+        />
+        {% if custom_theme.background_image %}
+        <div class="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <a href="{{ custom_theme.background_image }}" target="_blank" class="text-sm underline underline-offset-4">
+            Lihat background saat ini
+          </a>
+          <label class="flex items-center gap-2 text-sm">
+            <input type="checkbox" name="remove_background_image" value="true" class="h-4 w-4" />
+            Hapus background foto
+          </label>
+        </div>
+        {% endif %}
+      </div>
+
       <div class="flex flex-col sm:flex-row gap-4 mt-8">
-        <button
-          type="submit"
-          name="reset"
-          value="true"
-          class="w-full sm:w-1/2 bg-white/10 hover:bg-white/20 text-white border border-white/20 font-medium py-3 px-6 rounded-full transition-all duration-200 shadow-sm"
-          onclick="
-            return confirm(
-              'Apakah Anda yakin ingin mereset tema ke pengaturan awal?',
-            );
-          "
+        <a
+          href="{% url 'home_view' %}"
+          class="w-full sm:w-1/2 bg-white/10 hover:bg-white/20 text-white border border-white/20 font-medium py-3 px-6 rounded-full transition-all duration-200 shadow-sm text-center"
         >
-          Reset Default
-        </button>
+          Batal
+        </a>
         <button
           type="submit"
           class="w-full sm:w-1/2 bg-md-primary text-md-onPrimary hover:bg-opacity-90 font-medium py-3 px-6 rounded-full transition-all duration-200 shadow-sm"
@@ -587,15 +187,54 @@
         </button>
       </div>
     </form>
-
-    <div class="mt-6">
-      <a
-        href="{% url 'home_view' %}"
-        class="font-medium opacity-80 hover:opacity-100 transition-opacity"
-      >
-        Batal
-      </a>
-    </div>
   </div>
 </div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const currentFont =
+      "{{ custom_theme.font_family|default:theme.font_family|default:'Roboto, sans-serif'|escapejs }}";
+    const selectElement = document.getElementById("font_family");
+
+    for (let i = 0; i < selectElement.options.length; i++) {
+      if (selectElement.options[i].value === currentFont) {
+        selectElement.selectedIndex = i;
+        break;
+      }
+    }
+
+    const bgColorInput = document.getElementById("bg_color");
+    const bgColorHex = document.getElementById("bg_color_hex");
+    bgColorInput.addEventListener("input", function () {
+      bgColorHex.textContent = this.value.toUpperCase();
+    });
+
+    const textColorInput = document.getElementById("text_color");
+    const textColorHex = document.getElementById("text_color_hex");
+    textColorInput.addEventListener("input", function () {
+      textColorHex.textContent = this.value.toUpperCase();
+    });
+
+    const modeInputs = document.querySelectorAll('input[name="theme_mode"]');
+    const customControls = document.querySelectorAll("[data-custom-control]");
+
+    function syncCustomControls() {
+      const isCustom = document.querySelector('input[name="theme_mode"]:checked')?.value === "custom";
+      customControls.forEach((control) => {
+        control.classList.toggle("opacity-50", !isCustom);
+        control.querySelectorAll("input, select").forEach((field) => {
+          if (field.name !== "theme_mode") {
+            field.disabled = !isCustom;
+          }
+        });
+      });
+    }
+
+    modeInputs.forEach((input) => {
+      input.addEventListener("change", syncCustomControls);
+    });
+
+    syncCustomControls();
+  });
+</script>
 {% endblock %}
