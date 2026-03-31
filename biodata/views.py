@@ -8,6 +8,24 @@ from django.shortcuts import render, redirect
 
 from .context_processors import AUTHORIZED_EMAILS, DEFAULT_THEME, THEME_PRESETS, get_active_theme, get_original_theme
 
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from .forms import UsernameChangeForm # Import form yang baru dibuat
+
+@login_required
+def change_username(request):
+    if request.method == 'POST':
+        form = UsernameChangeForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Username kamu sudah berhasil diganti.")
+            return redirect('/') # Ganti 'main:show_main' dengan name URL halaman utamamu
+    else:
+        form = UsernameChangeForm(instance=request.user)
+    
+    return render(request, 'change_username.html', {'form': form})
+
 def edit_theme(request):
     if not request.user.is_authenticated:
         messages.warning(request, "Silakan login terlebih dahulu untuk mengakses halaman tersebut.")
