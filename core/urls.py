@@ -22,6 +22,8 @@ from biodata.views import edit_theme
 from core.views import github_webhook, home_view
 from django.conf import settings
 from django.conf.urls.static import static
+from django.urls import path
+from biodata.views import change_username
 
 
 urlpatterns = [
@@ -33,6 +35,7 @@ urlpatterns = [
     path('', home_view, name='home_view'),
     path('edit-theme/', edit_theme, name='edit_theme'),
     path('webhook/deploy/', github_webhook, name='github_webhook'),
+    path('change-username/', change_username, name='change_username'),
 ]
 
 if settings.DEBUG:

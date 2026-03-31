@@ -9,8 +9,16 @@ from django.views.decorators.csrf import csrf_exempt
 from biodata.models import ProfilMember
 
 def home_view(request):
+    search_query = (request.GET.get('q') or '').strip()
     members = ProfilMember.objects.all()
-    return render(request, 'home.html', {'members': members})
+
+    if search_query:
+        members = members.filter(nama__icontains=search_query)
+
+    return render(request, 'home.html', {
+        'members': members,
+        'search_query': search_query,
+    })
 
 @csrf_exempt 
 def github_webhook(request):

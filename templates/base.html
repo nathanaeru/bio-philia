@@ -79,10 +79,10 @@
 
   <body
     class="min-h-screen antialiased transition-colors duration-500"
-    style="background-color: {{ theme.bg_color|default:'#be185d' }}; color: {{ theme.text_color|default:'#ffffff' }}; font-family: {{ theme.font_family|default:'Roboto, sans-serif' }};"
+    style="background-color: {{ theme.bg_color|default:'#be185d' }}; {% if theme.background_image %}background-image: linear-gradient(rgba(255,255,255,0.08), rgba(0,0,0,0.14)), url('{{ theme.background_image }}'); background-size: cover; background-position: center; background-attachment: fixed;{% endif %} color: {{ theme.text_color|default:'#ffffff' }}; font-family: {{ theme.font_family|default:'Roboto, sans-serif' }};"
   >
     <nav
-      class="p-4 bg-md-primary text-md-onPrimary shadow-md transition-colors duration-500"
+      class="sticky top-0 z-40 p-4 bg-md-primary text-md-onPrimary shadow-md transition-colors duration-500"
     >
       <div class="container mx-auto flex justify-between items-center px-4">
         <a
@@ -92,7 +92,7 @@
         >
 
         <div class="flex items-center gap-3">
-          {% if user.is_authenticated %} {% if is_group_member %}
+          {% if is_group_member %}
           <a
             href="/edit-theme/"
             class="text-xs md:text-sm font-medium bg-white/10 hover:bg-white/20 px-4 py-2 rounded-full transition-all border border-white/10"
@@ -100,6 +100,14 @@
             ⚙️ Ubah Tema
           </a>
           {% endif %}
+          {% if user.is_authenticated %}
+          
+          <a
+            href="{% url 'change_username' %}"
+            class="text-xs md:text-sm font-medium bg-white/10 hover:bg-white/20 px-4 py-2 rounded-full transition-all border border-white/10"
+          >
+            👤 User
+          </a>
 
           <form method="post" action="/accounts/logout/" class="inline">
             {% csrf_token %}
