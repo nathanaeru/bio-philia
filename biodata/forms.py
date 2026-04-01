@@ -7,7 +7,7 @@ class UsernameChangeForm(forms.ModelForm):
         fields = ['username']
         widgets = {
             'username': forms.TextInput(attrs={
-                'class': 'form-control', # Biar tampilannya bagus (Bootstrap)
+                'class': 'form-control',
                 'placeholder': 'Masukkan username baru...'
             })
         }

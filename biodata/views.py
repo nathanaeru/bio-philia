@@ -38,7 +38,6 @@ def edit_theme(request):
     theme_setting, created = ThemeSetting.objects.get_or_create(id=1)
 
     if request.method == 'POST':
-        # 1. Fitur Reset Default
         if 'reset' in request.POST:
             theme_setting.theme_mode = 'original'
             theme_setting.bg_color = DEFAULT_THEME['bg_color']
@@ -58,7 +57,7 @@ def edit_theme(request):
 
         if selected_mode in THEME_PRESETS:
             theme_setting.save()
-            messages.success(request, f"Tema {selected_mode} berhasil diterapkan secara global.")
+            messages.success(request, f"Tema {selected_mode} berhasil diterapkan!")
         else:
             raw_bg = request.POST.get('bg_color', '')[:20]
             raw_text = request.POST.get('text_color', '')[:20]
@@ -90,7 +89,7 @@ def edit_theme(request):
                 theme_setting.background_image = uploaded_background
 
             theme_setting.save()
-            messages.success(request, "Tema custom berhasil diperbarui secara global.")
+            messages.success(request, "Tema custom berhasil diperbarui!")
 
         return redirect('home_view')
 
