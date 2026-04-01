@@ -32,54 +32,44 @@ AUTHORIZED_EMAILS = [
 ]
 
 
-def get_original_theme():
-    theme = ThemeSetting.objects.first()
-    if theme:
-        return {
-            "bg_color": theme.bg_color or DEFAULT_THEME["bg_color"],
-            "text_color": theme.text_color or DEFAULT_THEME["text_color"],
-            "font_family": theme.font_family or DEFAULT_THEME["font_family"],
-            "background_image": "",
-        }
-    return DEFAULT_THEME.copy()
-
-
 def get_active_theme(request):
-    original_theme = get_original_theme()
+    theme_setting = ThemeSetting.objects.first()
+    
+    if not theme_setting:
+        return DEFAULT_THEME.copy(), "original"
 
-    if not request.user.is_authenticated:
-        return original_theme, "original"
+    mode = theme_setting.theme_mode
 
-    if request.user.email not in AUTHORIZED_EMAILS:
-        return original_theme, "original"
-
-    theme_mode = request.session.get("theme_mode", "original")
-    if theme_mode == "custom":
-        custom_theme = request.session.get("custom_theme", {})
+    if mode in THEME_PRESETS:
+        return THEME_PRESETS[mode].copy(), mode
+    elif mode == "custom":
         return {
-            "bg_color": custom_theme.get("bg_color", original_theme["bg_color"]),
-            "text_color": custom_theme.get("text_color", original_theme["text_color"]),
-            "font_family": custom_theme.get("font_family", original_theme["font_family"]),
-            "background_image": custom_theme.get("background_image", ""),
+            "bg_color": theme_setting.bg_color,
+            "text_color": theme_setting.text_color,
+            "font_family": theme_setting.font_family,
+            "background_image": theme_setting.background_image.url if theme_setting.background_image else "",
         }, "custom"
 
-    if theme_mode in THEME_PRESETS and theme_mode != "original":
-        preset = THEME_PRESETS[theme_mode].copy()
-        preset["background_image"] = ""
-        return preset, theme_mode
-
-    return original_theme, "original"
+    return DEFAULT_THEME.copy(), "original"
 
 def website_theme(request):
     theme, theme_mode = get_active_theme(request)
+    is_member = request.user.is_authenticated and request.user.email in AUTHORIZED_EMAILS
 
-    is_member = False
-    if request.user.is_authenticated and request.user.email in AUTHORIZED_EMAILS:
-        is_member = True
+    theme_setting = ThemeSetting.objects.first()
+    custom_theme_dict = {}
+    if theme_setting:
+        custom_theme_dict = {
+            'bg_color': theme_setting.bg_color,
+            'text_color': theme_setting.text_color,
+            'font_family': theme_setting.font_family,
+            'background_image': theme_setting.background_image.url if theme_setting.background_image else "",
+        }
 
     return {
         'theme': theme, 
+        'custom_theme': custom_theme_dict,
+        'active_mode': theme_mode,
         'is_group_member': is_member,
-        'theme_mode': theme_mode,
         'can_customize_theme': is_member,
     }

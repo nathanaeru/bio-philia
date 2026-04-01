@@ -1,17 +1,17 @@
 import re
 from pathlib import Path
 
-from django.conf import settings
 from django.contrib import messages
-from django.core.files.storage import default_storage
 from django.shortcuts import render, redirect
 
-from .context_processors import AUTHORIZED_EMAILS, DEFAULT_THEME, THEME_PRESETS, get_active_theme, get_original_theme
+from biodata.models import ThemeSetting
+
+from .context_processors import AUTHORIZED_EMAILS, DEFAULT_THEME, THEME_PRESETS
 
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .forms import UsernameChangeForm # Import form yang baru dibuat
+from .forms import UsernameChangeForm 
 
 @login_required
 def change_username(request):
@@ -20,7 +20,7 @@ def change_username(request):
         if form.is_valid():
             form.save()
             messages.success(request, "Username kamu sudah berhasil diganti.")
-            return redirect('/') # Ganti 'main:show_main' dengan name URL halaman utamamu
+            return redirect('/')
     else:
         form = UsernameChangeForm(instance=request.user)
     
@@ -35,40 +35,45 @@ def edit_theme(request):
         messages.error(request, "Akses Ditolak: Anda tidak diperkenankan mengedit tema website ini.")
         return redirect('home_view')
 
-    original_theme = get_original_theme()
-    theme, active_mode = get_active_theme(request)
+    theme_setting, created = ThemeSetting.objects.get_or_create(id=1)
 
     if request.method == 'POST':
-        selected_mode = 'original' if 'reset' in request.POST else request.POST.get('theme_mode', 'original')
+        # 1. Fitur Reset Default
+        if 'reset' in request.POST:
+            theme_setting.theme_mode = 'original'
+            theme_setting.bg_color = DEFAULT_THEME['bg_color']
+            theme_setting.text_color = DEFAULT_THEME['text_color']
+            theme_setting.font_family = DEFAULT_THEME['font_family']
+            if theme_setting.background_image:
+                theme_setting.background_image.delete(save=False)
+            theme_setting.save()
+            messages.success(request, "Tema berhasil di-reset ke pengaturan awal!")
+            return redirect('home_view')
+
+        selected_mode = request.POST.get('theme_mode', 'original')
         if selected_mode not in ('original', 'dark', 'light', 'custom'):
             selected_mode = 'original'
 
-        if selected_mode == 'original':
-            request.session['theme_mode'] = 'original'
-            messages.success(request, "Tema original berhasil diterapkan.")
-        elif selected_mode in THEME_PRESETS:
-            request.session['theme_mode'] = selected_mode
-            messages.success(request, f"Tema {selected_mode} berhasil diterapkan.")
+        theme_setting.theme_mode = selected_mode
+
+        if selected_mode in THEME_PRESETS:
+            theme_setting.save()
+            messages.success(request, f"Tema {selected_mode} berhasil diterapkan secara global.")
         else:
             raw_bg = request.POST.get('bg_color', '')[:20]
             raw_text = request.POST.get('text_color', '')[:20]
             raw_font = request.POST.get('font_family', '')[:100]
 
-            if not re.match(r'^#(?:[0-9a-fA-F]{3}){1,2}$', raw_bg):
-                raw_bg = original_theme["bg_color"]
-            if not re.match(r'^#(?:[0-9a-fA-F]{3}){1,2}$', raw_text):
-                raw_text = original_theme["text_color"]
+            if re.match(r'^#(?:[0-9a-fA-F]{3}){1,2}$', raw_bg):
+                theme_setting.bg_color = raw_bg
+            if re.match(r'^#(?:[0-9a-fA-F]{3}){1,2}$', raw_text):
+                theme_setting.text_color = raw_text
 
-            clean_font = re.sub(r'[<>;&]', '', raw_font) or DEFAULT_THEME["font_family"]
-            custom_theme = {
-                'bg_color': raw_bg,
-                'text_color': raw_text,
-                'font_family': clean_font,
-                'background_image': request.session.get('custom_theme', {}).get('background_image', ''),
-            }
+            theme_setting.font_family = re.sub(r'[<>;&]', '', raw_font) or DEFAULT_THEME["font_family"]
 
             if 'remove_background_image' in request.POST:
-                custom_theme['background_image'] = ''
+                if theme_setting.background_image:
+                    theme_setting.background_image.delete(save=False)
 
             uploaded_background = request.FILES.get('background_image')
             if uploaded_background:
@@ -77,29 +82,16 @@ def edit_theme(request):
                 if extension not in allowed_extensions:
                     messages.error(request, "File background harus berupa JPG, JPEG, PNG, atau WEBP.")
                     return redirect('edit_theme')
+                
+                if theme_setting.background_image:
+                    theme_setting.background_image.delete(save=False) 
 
-                file_name = f"theme_backgrounds/user_{request.user.id}{extension}"
-                if default_storage.exists(file_name):
-                    default_storage.delete(file_name)
-                saved_path = default_storage.save(file_name, uploaded_background)
-                custom_theme['background_image'] = settings.MEDIA_URL + saved_path.replace("\\", "/")
+                uploaded_background.name = f"global_bg_image{extension}"
+                theme_setting.background_image = uploaded_background
 
-            request.session['theme_mode'] = 'custom'
-            request.session['custom_theme'] = custom_theme
-            messages.success(request, "Tema custom berhasil diperbarui.")
+            theme_setting.save()
+            messages.success(request, "Tema custom berhasil diperbarui secara global.")
 
         return redirect('home_view')
 
-    custom_theme = request.session.get('custom_theme', {})
-    context = {
-        'theme': theme,
-        'active_mode': active_mode,
-        'original_theme': original_theme,
-        'custom_theme': {
-            'bg_color': custom_theme.get('bg_color', original_theme['bg_color']),
-            'text_color': custom_theme.get('text_color', original_theme['text_color']),
-            'font_family': custom_theme.get('font_family', original_theme['font_family']),
-            'background_image': custom_theme.get('background_image', ''),
-        },
-    }
-    return render(request, 'edit_theme.html', context)
+    return render(request, 'edit_theme.html')
