@@ -7,8 +7,8 @@
         name="q"
         value="{{ search_query|default:'' }}"
         placeholder="Cari nama member..."
-        class="w-full rounded-full border px-5 py-3 text-sm outline-none placeholder:text-current/60"
-        style="{% if theme_mode == 'light' %}border-color: color-mix(in srgb, {{ theme.text_color|default:'#ffffff' }} 22%, transparent); background: rgba(255,255,255,0.78);{% else %}border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.1);{% endif %}"
+        class="w-full rounded-full border px-5 py-3 text-sm outline-none placeholder:text-current"
+        style="color: {{ theme.text_color|default:'#ffffff' }}; {% if theme_mode == 'light' %}border-color: color-mix(in srgb, {{ theme.text_color|default:'#ffffff' }} 22%, transparent); background: rgba(255,255,255,0.78);{% else %}border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.1);{% endif %}"
       />
       <div class="flex gap-3">
         <button
