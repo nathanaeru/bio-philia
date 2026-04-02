@@ -1,6 +1,10 @@
 import re
 from pathlib import Path
 
+from PIL import Image
+from io import BytesIO
+from django.core.files.uploadedfile import InMemoryUploadedFile
+
 from django.contrib import messages
 from django.shortcuts import render, redirect
 
@@ -82,11 +86,33 @@ def edit_theme(request):
                     messages.error(request, "File background harus berupa JPG, JPEG, PNG, atau WEBP.")
                     return redirect('edit_theme')
                 
+                img = Image.open(uploaded_background)
+                
+                if img.mode in ("RGBA", "P"):
+                    img = img.convert("RGB")
+                    
+
+                max_size = (1920, 1080)
+                img.thumbnail(max_size, Image.Resampling.LANCZOS)
+                
+                output_buffer = BytesIO()
+                
+                img.save(output_buffer, format='WEBP', quality=75)
+                output_buffer.seek(0)
+                
+                compressed_bg = InMemoryUploadedFile(
+                    output_buffer, 
+                    'ImageField', 
+                    'global_bg_image.webp',
+                    'image/webp', 
+                    output_buffer.tell(), 
+                    None
+                )
+
                 if theme_setting.background_image:
                     theme_setting.background_image.delete(save=False) 
 
-                uploaded_background.name = f"global_bg_image{extension}"
-                theme_setting.background_image = uploaded_background
+                theme_setting.background_image = compressed_bg
 
             theme_setting.save()
             messages.success(request, "Tema custom berhasil diperbarui!")
