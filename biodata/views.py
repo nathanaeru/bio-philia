@@ -1,4 +1,5 @@
 import re
+import time
 from pathlib import Path
 
 from PIL import Image
@@ -99,11 +100,13 @@ def edit_theme(request):
                 
                 img.save(output_buffer, format='WEBP', quality=75)
                 output_buffer.seek(0)
+
+                unique_filename = f"bg_{int(time.time())}.webp"
                 
                 compressed_bg = InMemoryUploadedFile(
                     output_buffer, 
                     'ImageField', 
-                    'global_bg_image.webp',
+                    unique_filename,
                     'image/webp', 
                     output_buffer.tell(), 
                     None
